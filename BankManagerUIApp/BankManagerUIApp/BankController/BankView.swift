@@ -11,6 +11,7 @@ class BankView: UIView {
     private var baseStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.spacing = 15
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -18,6 +19,7 @@ class BankView: UIView {
     private lazy var buttonStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
         return stackView
     }()
     
@@ -31,6 +33,7 @@ class BankView: UIView {
     
     private lazy var resetBankButton: UIButton = {
         let button = UIButton()
+        button.setTitle("초기화", for: .normal)
         button.setTitleColor(.systemRed, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .callout)
         return button
@@ -66,26 +69,34 @@ class BankView: UIView {
     private lazy var listLabelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
         return stackView
     }()
 
     private lazy var waitingClientLabel: UILabel = {
         let label = UILabel()
+        label.text = "대기중"
         label.textColor = .white
         label.backgroundColor = .systemGreen
+        label.font = .preferredFont(forTextStyle: .title1)
+        label.textAlignment = .center
         return label
     }()
     
     private lazy var processingClientLabel: UILabel = {
         let label = UILabel()
+        label.text = "업무중"
         label.textColor = .white
         label.backgroundColor = .systemIndigo
+        label.font = .preferredFont(forTextStyle: .title1)
+        label.textAlignment = .center
         return label
     }()
     
     private lazy var scrollStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
         return stackView
     }()
 
@@ -101,12 +112,14 @@ class BankView: UIView {
     
     private lazy var waitingClientStackView: UIStackView = {
         let stackView = UIStackView()
+        stackView.backgroundColor = .systemRed
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
 
     private lazy var processingClientStackView: UIStackView = {
         let stackView = UIStackView()
+        stackView.backgroundColor = .systemBlue
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -136,13 +149,13 @@ extension BankView {
 
         buttonStackView.addArrangedSubviews(addClientsButton, resetBankButton)
         timeLabelStackView.addArrangedSubviews(workingHoursLabel, timeLabel)
-        centerStackView.addArrangedSubviews(centerStackView)
+        centerStackView.addArrangedSubviews(timeLabelStackView)
         listLabelStackView.addArrangedSubviews(waitingClientLabel, processingClientLabel)
         scrollStackView.addArrangedSubviews(waitingScrollView, processingScrollView)
         waitingScrollView.addSubview(waitingClientStackView)
         processingScrollView.addSubview(processingClientStackView)
         
-        baseStackView.addArrangedSubviews(buttonStackView, timeLabelStackView, centerStackView, listLabelStackView, scrollStackView)
+        baseStackView.addArrangedSubviews(buttonStackView, centerStackView, listLabelStackView, scrollStackView)
     }
     
     //MARK: - layout
@@ -161,11 +174,11 @@ extension BankView {
             waitingClientStackView.bottomAnchor.constraint(equalTo: waitingScrollView.bottomAnchor),
             waitingClientStackView.leadingAnchor.constraint(equalTo: waitingScrollView.leadingAnchor),
             waitingClientStackView.trailingAnchor.constraint(equalTo: waitingScrollView.trailingAnchor),
-
+            
             processingClientStackView.topAnchor.constraint(equalTo: processingScrollView.topAnchor),
             processingClientStackView.bottomAnchor.constraint(equalTo: processingScrollView.bottomAnchor),
             processingClientStackView.leadingAnchor.constraint(equalTo: processingScrollView.leadingAnchor),
-            processingClientStackView.trailingAnchor.constraint(equalTo: processingScrollView.trailingAnchor),
+            processingClientStackView.trailingAnchor.constraint(equalTo: processingScrollView.trailingAnchor)
         ])
     }
 }
