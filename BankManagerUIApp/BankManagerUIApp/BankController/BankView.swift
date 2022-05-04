@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BankView: UIView {
+final class BankView: UIView {
     private var baseStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -23,7 +23,7 @@ class BankView: UIView {
         return stackView
     }()
     
-    private lazy var addClientsButton: UIButton = {
+    lazy var addClientsButton: UIButton = {
         let button = UIButton()
         button.setTitle("고객 10명 추가", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
@@ -31,7 +31,7 @@ class BankView: UIView {
         return button
     }()
     
-    private lazy var resetBankButton: UIButton = {
+    lazy var resetBankButton: UIButton = {
         let button = UIButton()
         button.setTitle("초기화", for: .normal)
         button.setTitleColor(.systemRed, for: .normal)
@@ -59,9 +59,8 @@ class BankView: UIView {
         return label
     }()
     
-    private lazy var timeLabel: UILabel = {
+    lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "00:00:000"
         label.font = .preferredFont(forTextStyle: .body)
         return label
     }()

@@ -7,12 +7,12 @@
 
 import Foundation
 
-class StopWatch {
-    var timer: Timer?
-    var time: Double = 0
+final class StopWatch {
+    private var timer: Timer?
+    private var time: Double = 0
     var initTime = "00:00:000"
     
-    let dateFormatter: DateFormatter = DateFormatter.fomat
+    private let dateFormatter: DateFormatter = DateFormatter.fomat
     
     func start() {
         if timer == nil {
@@ -21,22 +21,20 @@ class StopWatch {
         }
     }
     
-    @objc func addTime() {
+    @objc private func addTime() {
         time += 0.001
     }
     
-    func stopTime() -> String? {
-        let duration = calculateTime()
-        
+    func stop() {
         timer?.invalidate()
         time = 0
         timer = nil
-        
-        return duration
     }
     
-    func calculateTime() -> String? {
-        guard let convertedInitTime: Date = dateFormatter.date(from: initTime) else { return nil }
+    func calculateTime() -> String {
+        guard let convertedInitTime: Date = dateFormatter.date(from: initTime) else {
+            return ""
+        }
         
         let newTime = convertedInitTime + time
         
