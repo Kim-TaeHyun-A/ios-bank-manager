@@ -1,6 +1,6 @@
 //
 //  BankManagerUIApp - SceneDelegate.swift
-//  Created by yagom. 
+//  Created by Taeangel, Tiana 2022/05/04.
 //  Copyright © yagom academy. All rights reserved.
 // 
 
