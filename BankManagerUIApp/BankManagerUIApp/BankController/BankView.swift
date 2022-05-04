@@ -112,14 +112,16 @@ class BankView: UIView {
     
     private lazy var waitingClientStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.backgroundColor = .systemRed
+        stackView.axis = .vertical
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
 
     private lazy var processingClientStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.backgroundColor = .systemBlue
+        stackView.axis = .vertical
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -165,20 +167,22 @@ extension BankView {
         NSLayoutConstraint.activate([
             baseStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             baseStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            baseStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            baseStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
+            baseStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            baseStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            waitingClientStackView.topAnchor.constraint(equalTo: waitingScrollView.topAnchor),
-            waitingClientStackView.bottomAnchor.constraint(equalTo: waitingScrollView.bottomAnchor),
-            waitingClientStackView.leadingAnchor.constraint(equalTo: waitingScrollView.leadingAnchor),
-            waitingClientStackView.trailingAnchor.constraint(equalTo: waitingScrollView.trailingAnchor),
+            waitingClientStackView.topAnchor.constraint(equalTo: waitingScrollView.contentLayoutGuide.topAnchor),
+            waitingClientStackView.bottomAnchor.constraint(equalTo: waitingScrollView.contentLayoutGuide.bottomAnchor),
+            waitingClientStackView.leadingAnchor.constraint(equalTo: waitingScrollView.contentLayoutGuide.leadingAnchor),
+            waitingClientStackView.trailingAnchor.constraint(equalTo: waitingScrollView.contentLayoutGuide.trailingAnchor),
+            waitingClientStackView.widthAnchor.constraint(equalTo: waitingScrollView.frameLayoutGuide.widthAnchor),
             
-            processingClientStackView.topAnchor.constraint(equalTo: processingScrollView.topAnchor),
-            processingClientStackView.bottomAnchor.constraint(equalTo: processingScrollView.bottomAnchor),
-            processingClientStackView.leadingAnchor.constraint(equalTo: processingScrollView.leadingAnchor),
-            processingClientStackView.trailingAnchor.constraint(equalTo: processingScrollView.trailingAnchor)
+            processingClientStackView.topAnchor.constraint(equalTo: processingScrollView.contentLayoutGuide.topAnchor),
+            processingClientStackView.bottomAnchor.constraint(equalTo: processingScrollView.contentLayoutGuide.bottomAnchor),
+            processingClientStackView.leadingAnchor.constraint(equalTo: processingScrollView.contentLayoutGuide.leadingAnchor),
+            processingClientStackView.trailingAnchor.constraint(equalTo: processingScrollView.contentLayoutGuide.trailingAnchor),
+            processingClientStackView.widthAnchor.constraint(equalTo: processingScrollView.frameLayoutGuide.widthAnchor)
         ])
     }
 }
