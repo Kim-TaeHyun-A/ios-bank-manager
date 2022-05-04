@@ -9,7 +9,12 @@ import Foundation
 
 final class StopWatch {
     private var timer: Timer?
-    private var time: Double = 0
+    private var observer: Observer?
+    var time: Double = 0 {
+        didSet {
+            notify()
+        }
+    }
     var initTime = "00:00:000"
     
     private let dateFormatter: DateFormatter = DateFormatter.fomat
@@ -39,5 +44,19 @@ final class StopWatch {
         let newTime = convertedInitTime + time
         
         return dateFormatter.string(from: newTime)
+    }
+}
+
+extension StopWatch {
+    func subscribe(observer: Observer) {
+        self.observer = observer
+    }
+    
+    func unSubscribe(observer: Observer) {
+        self.observer = nil
+    }
+    
+    private func notify() {
+        observer?.updateLabel()
     }
 }

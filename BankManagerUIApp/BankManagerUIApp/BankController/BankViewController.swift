@@ -6,13 +6,13 @@
 
 import UIKit
 
+protocol Observer {
+    func updateLabel()
+}
+
 final class BankViewController: UIViewController {
     private lazy var baseView = BankView(frame: view.bounds)
-    private var stopWatch: StopWatch? {
-        didSet {
-            baseView.timeLabel.text = stopWatch?.calculateTime()
-        }
-    }
+    private let stopWatch = StopWatch()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +21,7 @@ final class BankViewController: UIViewController {
     }
     
     private func updata() {
-        baseView.timeLabel.text = stopWatch?.initTime
+        baseView.timeLabel.text = stopWatch.initTime
     }
     
     private func bind() {
@@ -32,11 +32,18 @@ final class BankViewController: UIViewController {
     }
     
     @objc private func didTapaddClientsButton() {
-        stopWatch?.start()
+        stopWatch.subscribe(observer: self)
+        stopWatch.start()
     }
     
     @objc private func didTapresetBankButton() {
-        stopWatch?.stop()
+        stopWatch.stop()
+        stopWatch.unSubscribe(observer: self)
     }
 }
 
+extension BankViewController: Observer {
+    func updateLabel() {
+        baseView.timeLabel.text = stopWatch.calculateTime()
+    }
+}
