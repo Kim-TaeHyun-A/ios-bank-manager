@@ -27,16 +27,16 @@ struct Bank: Measurable {
     
     func measureWorkingHours() -> Double {
         let duration = measureTime {
-            open()
+//            open()
             workGroup.wait()
         }
         return duration
     }
     
-    private func open() {
+    func open(beforeProcess: @escaping (Client) -> Void, afterProcess: @escaping (Client) -> Void) {
         while let client = clients.dequeue() {
             DispatchQueue.global().async(group: workGroup) {
-                BankClerk.work(client: client, group: workGroup)
+                BankClerk.work(client: client, group: workGroup, beforeProcess: afterProcess, afterProcess: afterProcess)
             }
         }
     }
