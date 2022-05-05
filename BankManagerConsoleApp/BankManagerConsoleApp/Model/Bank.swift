@@ -16,6 +16,7 @@ private enum ClientCount: Int {
 struct Bank: Measurable {
     private var clients: Queue<Client>
     private let workGroup = DispatchGroup()
+    private var lastClient = 0
     
     private var totalClients: Int {
         return Int.random(in: ClientCount.minimum.rawValue...ClientCount.maximum.rawValue)
@@ -51,4 +52,33 @@ struct Bank: Measurable {
         }
         return totalClients
     }
+    
+    mutating func resetLastClient() {
+        lastClient = 0
+    }
+    
+    mutating func addNewClient() -> Client? {
+        guard let newClient: Client = giveWaitingNumber() else {
+            return nil
+        }
+        
+        clients.enqueue(data: newClient)
+        return newClient
+    }
+    
+    mutating private func giveWaitingNumber() -> Client? {
+        guard let task = Task.random else {
+            return nil
+        }
+        
+        let waitingNuber = lastClient + 1
+        lastClient = waitingNuber
+        
+        return Client(waitingNumber: waitingNuber, task: task)
+    }
+    
+    func clearClient() {
+        clients.clear()
+    }
+    
 }
