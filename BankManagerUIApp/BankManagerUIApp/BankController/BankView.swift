@@ -109,7 +109,7 @@ final class BankView: UIView {
         return scrollView
     }()
     
-    private lazy var waitingClientStackView: UIStackView = {
+    lazy var waitingClientStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -117,7 +117,7 @@ final class BankView: UIView {
         return stackView
     }()
 
-    private lazy var processingClientStackView: UIStackView = {
+    lazy var processingClientStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
