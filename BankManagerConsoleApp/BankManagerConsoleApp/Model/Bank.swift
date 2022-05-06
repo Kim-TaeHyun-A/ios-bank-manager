@@ -14,9 +14,16 @@ private enum ClientCount: Int {
 }
 
 struct Bank: Measurable {
-    private var clients = Queue<Client>()
     private let workGroup = DispatchGroup()
     private var lastClientsNumber = 0
+    
+    private var loanClerks: [DispatchQueue] = []
+    private var depositClerks: [DispatchQueue] = []
+    
+    let raceCondition = DispatchQueue(label: "raceCondition")
+    
+    private var loanClients = Queue<Client>()
+    private var depositClients = Queue<Client>()
     
     private var totalClientsCount: Int {
         return Int.random(in: ClientCount.minimum.rawValue...ClientCount.maximum.rawValue)
@@ -29,13 +36,72 @@ struct Bank: Measurable {
         return duration
     }
     
+    mutating func resetClerk() {
+        loanClerks.removeAll()
+        depositClerks.removeAll()
+    }
+    
+    mutating func setClerks(loan: Int, deposit: Int) {
+        for number in 1...loan {
+            loanClerks.append(DispatchQueue(label: "loanClerk\(number)"))
+        }
+        
+        for number in 1...deposit {
+            depositClerks.append(DispatchQueue(label: "depositClerk\(number)"))
+        }
+    }
+    
     private func open() {
-        while let client = clients.dequeue() {
-            DispatchQueue.global().async(group: workGroup) {
-                BankClerk.work(client: client, group: workGroup)
+        DispatchQueue.global().async(group: workGroup) {
+            while !loanClients.isEmpty {
+                for clerk in loanClerks {
+                    clerk.async(group: workGroup) {
+                        operateClerkWork(clerk: clerk, task: Task.loan)
+                    }
+                }
+            }
+        }
+        
+        DispatchQueue.global().async(group: workGroup) {
+            while !depositClients.isEmpty {
+                for clerk in depositClerks {
+                    clerk.async(group: workGroup) {
+                        operateClerkWork(clerk: clerk, task: Task.deposit)
+                    }
+                }
             }
         }
         workGroup.wait()
+    }
+    
+    func operateClerkWork(clerk: DispatchQueue, task: Task) {
+        var client: Client?
+        var clientQueue: Queue<Client>?
+        
+        switch task {
+        case .deposit:
+            clientQueue = depositClients
+        case .loan:
+            clientQueue = loanClients
+        }
+
+        raceCondition.sync {
+            client = clientQueue?.dequeue()
+        }
+
+        guard let client = client else {
+            return
+        }
+
+        clerk.async(group: workGroup) {
+            clerkWork(client: client)
+        }
+    }
+    
+    func clerkWork(client: Client) {
+        print("\(client.waitingNumber)번 고객 \(client.task.rawValue)업무 시작")
+        Thread.sleep(forTimeInterval: client.task.time)
+        print("\(client.waitingNumber)번 고객 \(client.task.rawValue)업무 완료")
     }
     
     func giveWaitingNumber() -> Int? {
@@ -44,7 +110,13 @@ struct Bank: Measurable {
             guard let task = Task.random else {
                 return nil
             }
-            clients.enqueue(data: Client(waitingNumber: waitingNumber, task: task))
+            
+            switch task {
+            case .deposit:
+                depositClients.enqueue(data: Client(waitingNumber: waitingNumber, task: task))
+            case .loan:
+                loanClients.enqueue(data: Client(waitingNumber: waitingNumber, task: task))
+            }
         }
         return totalClients
     }

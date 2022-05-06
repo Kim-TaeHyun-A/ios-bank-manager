@@ -55,10 +55,11 @@ struct BankManager {
         print(Guide.input.rawValue, terminator: String.empty)
     }
     
-    private func manageBank() {
+    private mutating func manageBank() {
         guard let totalCount = bank.giveWaitingNumber() else {
             return
         }
+        bank.setClerks(loan: 1, deposit: 2)
         closeBank(totalDuration: bank.measureWorkingHours(), clientCount: totalCount)
     }
     
@@ -67,7 +68,8 @@ struct BankManager {
         openBank()
     }
     
-    private func closeBank(totalDuration: Double, clientCount: Int) {
+    private mutating func closeBank(totalDuration: Double, clientCount: Int) {
         Guide.closeDescription(totalDuration: totalDuration, clientCount: clientCount)
+        bank.resetClerk()
     }
 }
