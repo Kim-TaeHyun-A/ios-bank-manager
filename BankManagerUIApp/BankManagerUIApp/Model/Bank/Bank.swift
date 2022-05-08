@@ -9,10 +9,10 @@ import Foundation
 
 struct Bank: Measurable {
     var bankDelegate: BankDelegate?
-    private let depositOperationQueue = OperationQueue()
-    private let loanOperationQueue = OperationQueue()
-    private var loanClients: Queue<Client> = Queue()
-    private var depositClients: Queue<Client> = Queue()
+    let depositOperationQueue = OperationQueue()
+    let loanOperationQueue = OperationQueue()
+    private(set) var loanClients: Queue<Client> = Queue()
+    private(set) var depositClients: Queue<Client> = Queue()
     private var lastClient = 0
     
     func cancelAllBankOperations() {

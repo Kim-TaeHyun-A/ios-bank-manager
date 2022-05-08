@@ -40,6 +40,11 @@ final class StopWatch {
         timer = nil
     }
     
+    func pause() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
     func calculateTime() -> String {
         guard let convertedInitTime: Date = dateFormatter.date(from: initTime) else {
             return ""

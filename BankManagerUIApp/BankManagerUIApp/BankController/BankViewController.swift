@@ -23,6 +23,7 @@ protocol BankDelegate {
 
 extension BankViewController: BankDelegate {
     func startClerkProcess(client: Client) {
+        stopWatch.start()
         let processingNumber = client.waitingNumber - 1
         guard let processingClient = waitingClients[safe: processingNumber] else {
             return
@@ -123,7 +124,7 @@ final class BankViewController: UIViewController {
     }
     
     func removeStack(of client: Client, in stackView: UIStackView) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             for stack in stackView.arrangedSubviews {
                 guard let clientLabel = stack as? UILabel,
                       let clientLabelText = clientLabel.text else { return }
@@ -134,6 +135,11 @@ final class BankViewController: UIViewController {
                 guard client.waitingNumber == Int(clientNumber) else { continue }
                 
                 stack.removeFromSuperview()
+
+                if baseView.processingClientStackView.subviews.isEmpty, baseView.waitingClientStackView.subviews.isEmpty {
+                    stopWatch.pause()
+                }
+                
                 return
             }
         }
