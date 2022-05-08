@@ -14,43 +14,22 @@ private enum ClientCount: Int {
 }
 
 struct Bank: Measurable {
-    private var clients: Queue<Client>
+    private var loanClients: Queue<Client> = Queue()
+    private var depositClients: Queue<Client> = Queue()
     private let workGroup = DispatchGroup()
     private var lastClient = 0
     
-    private var totalClients: Int {
-        return Int.random(in: ClientCount.minimum.rawValue...ClientCount.maximum.rawValue)
-    }
-    
-    init(clients: Queue<Client>) {
-        self.clients = clients
-    }
-    
-    func measureWorkingHours() -> Double {
-        let duration = measureTime {
-//            open()
-            workGroup.wait()
-        }
-        return duration
-    }
-    
     func open(beforeProcess: @escaping (Client) -> Void, afterProcess: @escaping (Client) -> Void) {
-        while let client = clients.dequeue() {
+        while let client = depositClients.dequeue() {
             DispatchQueue.global().async(group: workGroup) {
-                BankClerk.work(client: client, group: workGroup, beforeProcess: afterProcess, afterProcess: afterProcess)
+                BankClerk.work(client: client, group: workGroup, beforeProcess: beforeProcess, afterProcess: afterProcess)
             }
         }
-    }
-    
-    func giveWaitingNumber() -> Int? {
-        let totalClients = totalClients
-        for waitingNumber in ClientCount.first.rawValue...totalClients {
-            guard let task = Task.random else {
-                return nil
+        while let client = loanClients.dequeue() {
+            DispatchQueue.global().async(group: workGroup) {
+                BankClerk.work(client: client, group: workGroup, beforeProcess: beforeProcess, afterProcess: afterProcess)
             }
-            clients.enqueue(data: Client(waitingNumber: waitingNumber, task: task))
         }
-        return totalClients
     }
     
     mutating func resetLastClient() {
@@ -62,7 +41,13 @@ struct Bank: Measurable {
             return nil
         }
         
-        clients.enqueue(data: newClient)
+        switch newClient.task {
+        case .deposit:
+            depositClients.enqueue(data: newClient)
+        case .loan:
+            loanClients.enqueue(data: newClient)
+        }
+        
         return newClient
     }
     
@@ -78,7 +63,8 @@ struct Bank: Measurable {
     }
     
     func clearClient() {
-        clients.clear()
+        loanClients.clear()
+        depositClients.clear()
     }
     
 }

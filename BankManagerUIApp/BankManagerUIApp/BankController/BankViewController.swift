@@ -20,9 +20,8 @@ final class BankViewController: UIViewController {
     private lazy var baseView = BankView(frame: view.bounds)
     private let stopWatch = StopWatch()
     
-    private var bank = Bank(clients: Queue())
+    private var bank = Bank()
     private var waitingClients = [Client]()
-    private var processingClients = [Client]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,19 +67,10 @@ final class BankViewController: UIViewController {
             return
         }
         removeStack(of: client, in: baseView.waitingClientStackView)
-        processingClients.append(processingClient)
-//        processingClients.insert(processingClient, at: processingNumber)
         addStack(client: processingClient, in: baseView.processingClientStackView)
     }
     
     func completeClerkProcess(client: Client) {
-        let processedNumber = client.waitingNumber - 1
-        guard let _ = processingClients[safe: processedNumber] else {
-            print("ed error")
-            return
-        }
-        _ = processingClients.remove(at: processedNumber)
-        //런타임 에러 위험
         removeStack(of: client, in: baseView.processingClientStackView)
     }
     
@@ -128,9 +118,13 @@ final class BankViewController: UIViewController {
                 guard let clientLabel = stack as? UILabel,
                 let clientLabelText = clientLabel.text else { return }
                 
-                let clientNumber = clientLabelText.compactMap { Int(String($0)) }
-                guard client.waitingNumber == clientNumber.first else { continue }
-                stackView.removeArrangedSubview(stack)
+                let clientNumber = clientLabelText
+                    .compactMap { Int(String($0)) }
+                    .reduce("") { $0 + String($1) }
+                guard client.waitingNumber == Int(clientNumber) else { continue }
+                
+                
+                stack.removeFromSuperview()
                 return
             }
         }
@@ -139,7 +133,7 @@ final class BankViewController: UIViewController {
     func removeAllStacks(in stackView: UIStackView) {
         DispatchQueue.main.async {
             for labels in stackView.subviews {
-                stackView.removeArrangedSubview(labels)
+                labels.removeFromSuperview()
             }
         }
     }
@@ -147,7 +141,6 @@ final class BankViewController: UIViewController {
     func clearAllStacks() {
         bank.resetLastClient()
         waitingClients = [Client]()
-        processingClients = [Client]()
         removeAllStacks(in: baseView.waitingClientStackView)
         removeAllStacks(in: baseView.processingClientStackView)
     }

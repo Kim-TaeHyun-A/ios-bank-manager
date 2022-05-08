@@ -11,7 +11,6 @@
 		0EC894E628223EDB0005A9B6 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894DB28223E280005A9B6 /* Task.swift */; };
 		0EC894E728223EDB0005A9B6 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894E428223E280005A9B6 /* LinkedList.swift */; };
 		0EC894E828223EDB0005A9B6 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894DA28223E280005A9B6 /* Bank.swift */; };
-		0EC894E928223EDB0005A9B6 /* BankManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894D928223E280005A9B6 /* BankManager.swift */; };
 		0EC894EA28223EDB0005A9B6 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894DF28223E280005A9B6 /* Double+.swift */; };
 		0EC894EB28223EDB0005A9B6 /* Measurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894E128223E280005A9B6 /* Measurable.swift */; };
 		0EC894EC28223EDB0005A9B6 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894E328223E280005A9B6 /* Queue.swift */; };
@@ -50,7 +49,6 @@
 /* Begin PBXFileReference section */
 		0EC894D728223E280005A9B6 /* BankClerk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankClerk.swift; sourceTree = "<group>"; };
 		0EC894D828223E280005A9B6 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
-		0EC894D928223E280005A9B6 /* BankManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankManager.swift; sourceTree = "<group>"; };
 		0EC894DA28223E280005A9B6 /* Bank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
 		0EC894DB28223E280005A9B6 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		0EC894DE28223E280005A9B6 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
@@ -106,7 +104,6 @@
 			isa = PBXGroup;
 			children = (
 				0EC894E228223E280005A9B6 /* DataStructure */,
-				0EC894D628223E280005A9B6 /* Model */,
 				0EC894DC28223E280005A9B6 /* Utils */,
 			);
 			name = Frameworks;
@@ -117,12 +114,10 @@
 			children = (
 				0EC894D728223E280005A9B6 /* BankClerk.swift */,
 				0EC894D828223E280005A9B6 /* Client.swift */,
-				0EC894D928223E280005A9B6 /* BankManager.swift */,
 				0EC894DA28223E280005A9B6 /* Bank.swift */,
 				0EC894DB28223E280005A9B6 /* Task.swift */,
 			);
-			name = Model;
-			path = ../BankManagerConsoleApp/BankManagerConsoleApp/Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		0EC894DC28223E280005A9B6 /* Utils */ = {
@@ -224,6 +219,7 @@
 			children = (
 				864EE39E282254D900573488 /* Utils */,
 				0EC894EF28223F870005A9B6 /* Scene */,
+				0EC894D628223E280005A9B6 /* Model */,
 				0EC894F2282243230005A9B6 /* BankController */,
 				C7694E43259C3EA20053667F /* Assets.xcassets */,
 				C7694E45259C3EA20053667F /* LaunchScreen.storyboard */,
@@ -381,7 +377,6 @@
 			files = (
 				C7694E3F259C3E9F0053667F /* BankViewController.swift in Sources */,
 				0EC894E828223EDB0005A9B6 /* Bank.swift in Sources */,
-				0EC894E928223EDB0005A9B6 /* BankManager.swift in Sources */,
 				C7694E3B259C3E9F0053667F /* AppDelegate.swift in Sources */,
 				0EC894EA28223EDB0005A9B6 /* Double+.swift in Sources */,
 				C7694E3D259C3E9F0053667F /* SceneDelegate.swift in Sources */,

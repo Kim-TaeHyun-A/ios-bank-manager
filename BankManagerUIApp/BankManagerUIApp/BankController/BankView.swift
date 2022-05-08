@@ -55,13 +55,13 @@ final class BankView: UIView {
     private lazy var workingHoursLabel: UILabel = {
         let label = UILabel()
         label.text = "업무시간 - "
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .monospacedDigitSystemFont(ofSize: 22, weight: .regular)
         return label
     }()
     
     lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .monospacedDigitSystemFont(ofSize: 22, weight: .regular)
         return label
     }()
     
