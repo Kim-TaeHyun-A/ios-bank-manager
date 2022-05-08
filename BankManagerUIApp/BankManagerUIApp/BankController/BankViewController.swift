@@ -42,7 +42,6 @@ final class BankViewController: UIViewController {
     
     @objc private func didTapaddClientsButton() {
         stopWatch.subscribe(observer: self)
-//        stopWatch.start()
         addNewClients(number: 10)
         bank.open { client in
             self.startClerkProcess(client: client)
@@ -63,7 +62,6 @@ final class BankViewController: UIViewController {
     func startClerkProcess(client: Client) {
         let processingNumber = client.waitingNumber - 1
         guard let processingClient = waitingClients[safe: processingNumber] else {
-            print("ind error")
             return
         }
         removeStack(of: client, in: baseView.waitingClientStackView)
@@ -78,10 +76,6 @@ final class BankViewController: UIViewController {
         for _ in 1...number {
             guard let newClient = bank.addNewClient() else { return }
             waitingClients.append(newClient)
-            
-//            waitingClients.insert(newClient, at: newClient.waitingNumber)
-            
-            print(newClient.waitingNumber)
             addStack(client: newClient, in: baseView.waitingClientStackView)
         }
     }
@@ -122,7 +116,6 @@ final class BankViewController: UIViewController {
                     .compactMap { Int(String($0)) }
                     .reduce("") { $0 + String($1) }
                 guard client.waitingNumber == Int(clientNumber) else { continue }
-                
                 
                 stack.removeFromSuperview()
                 return
