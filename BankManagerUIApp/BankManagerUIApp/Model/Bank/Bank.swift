@@ -7,27 +7,40 @@
 
 import Foundation
 
-private enum ClientCount: Int {
-    case minimum = 10
-    case maximum = 30
-    case first = 1
-}
-
 struct Bank: Measurable {
+    var bankDelegate: BankDelegate?
+    private let depositOperationQueue = OperationQueue()
+    private let loanOperationQueue = OperationQueue()
     private var loanClients: Queue<Client> = Queue()
     private var depositClients: Queue<Client> = Queue()
-    private let workGroup = DispatchGroup()
     private var lastClient = 0
     
-    func open(beforeProcess: @escaping (Client) -> Void, afterProcess: @escaping (Client) -> Void) {
-        while let client = depositClients.dequeue() {
-            DispatchQueue.global().async(group: workGroup) {
-                BankClerk.work(client: client, group: workGroup, beforeProcess: beforeProcess, afterProcess: afterProcess)
+    func cancelAllBankOperations() {
+        depositOperationQueue.cancelAllOperations()
+        loanOperationQueue.cancelAllOperations()
+    }
+    
+    func setClerkCount(loan: Int, deposit: Int) {
+        loanOperationQueue.maxConcurrentOperationCount = loan
+        depositOperationQueue.maxConcurrentOperationCount = deposit
+    }
+    
+    func startLoanWork() {
+        while let client = loanClients.dequeue() {
+            loanOperationQueue.addOperation {
+                bankDelegate?.startClerkProcess(client: client)
+                Thread.sleep(forTimeInterval: client.task.time)
+                bankDelegate?.completeClerkProcess(client: client)
             }
         }
-        while let client = loanClients.dequeue() {
-            DispatchQueue.global().async(group: workGroup) {
-                BankClerk.work(client: client, group: workGroup, beforeProcess: beforeProcess, afterProcess: afterProcess)
+    }
+    
+    func startDepositWork() {
+        while let client = depositClients.dequeue() {
+            depositOperationQueue.addOperation {
+                bankDelegate?.startClerkProcess(client: client)
+                Thread.sleep(forTimeInterval: client.task.time)
+                bankDelegate?.completeClerkProcess(client: client)
             }
         }
     }

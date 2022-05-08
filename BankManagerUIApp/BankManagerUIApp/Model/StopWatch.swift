@@ -22,7 +22,11 @@ final class StopWatch {
     func start() {
         if timer == nil {
             timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(addTime), userInfo: nil, repeats: true)
-            timer?.fire()
+            
+            guard let timer = timer else {
+                return
+            }
+            RunLoop.main.add(timer, forMode: .common)
         }
     }
     

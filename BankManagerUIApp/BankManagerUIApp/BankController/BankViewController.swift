@@ -16,7 +16,29 @@ extension Array {
     }
 }
 
+protocol BankDelegate {
+    func startClerkProcess(client: Client)
+    func completeClerkProcess(client: Client)
+}
+
+extension BankViewController: BankDelegate {
+    func startClerkProcess(client: Client) {
+        let processingNumber = client.waitingNumber - 1
+        guard let processingClient = waitingClients[safe: processingNumber] else {
+            return
+        }
+        removeStack(of: client, in: baseView.waitingClientStackView)
+        addStack(client: processingClient, in: baseView.processingClientStackView)
+    }
+    
+    func completeClerkProcess(client: Client) {
+        removeStack(of: client, in: baseView.processingClientStackView)
+    }
+}
+
 final class BankViewController: UIViewController {
+    private let operationQueue = OperationQueue()
+    
     private lazy var baseView = BankView(frame: view.bounds)
     private let stopWatch = StopWatch()
     
@@ -25,6 +47,8 @@ final class BankViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bank.bankDelegate = self
+        bank.setClerkCount(loan: 1, deposit: 2)
         bind()
         updata()
     }
@@ -43,33 +67,25 @@ final class BankViewController: UIViewController {
     @objc private func didTapaddClientsButton() {
         stopWatch.subscribe(observer: self)
         addNewClients(number: 10)
-        bank.open { client in
-            self.startClerkProcess(client: client)
-        } afterProcess: { [self] client in
-            completeClerkProcess(client: client)
+        stopWatch.start()
+        let loan = BlockOperation { [self] in
+            bank.startLoanWork()
         }
         
-        stopWatch.start()
-
+        let deposit = BlockOperation { [self] in
+            bank.startDepositWork()
+        }
+        
+        operationQueue.maxConcurrentOperationCount = 2
+        operationQueue.addOperations([loan, deposit], waitUntilFinished: true)
     }
     
     @objc private func didTapResetBankButton() {
         stopWatch.stop()
         stopWatch.unSubscribe(observer: self)
         clearAllStacks()
-    }
-    
-    func startClerkProcess(client: Client) {
-        let processingNumber = client.waitingNumber - 1
-        guard let processingClient = waitingClients[safe: processingNumber] else {
-            return
-        }
-        removeStack(of: client, in: baseView.waitingClientStackView)
-        addStack(client: processingClient, in: baseView.processingClientStackView)
-    }
-    
-    func completeClerkProcess(client: Client) {
-        removeStack(of: client, in: baseView.processingClientStackView)
+        operationQueue.cancelAllOperations()
+        bank.cancelAllBankOperations()
     }
     
     func addNewClients(number: Int) {
@@ -110,7 +126,7 @@ final class BankViewController: UIViewController {
         DispatchQueue.main.async {
             for stack in stackView.arrangedSubviews {
                 guard let clientLabel = stack as? UILabel,
-                let clientLabelText = clientLabel.text else { return }
+                      let clientLabelText = clientLabel.text else { return }
                 
                 let clientNumber = clientLabelText
                     .compactMap { Int(String($0)) }

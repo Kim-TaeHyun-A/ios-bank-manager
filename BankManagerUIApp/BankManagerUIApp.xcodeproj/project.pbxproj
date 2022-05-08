@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0EC894E528223EDB0005A9B6 /* BankClerk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894D728223E280005A9B6 /* BankClerk.swift */; };
 		0EC894E628223EDB0005A9B6 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894DB28223E280005A9B6 /* Task.swift */; };
 		0EC894E728223EDB0005A9B6 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894E428223E280005A9B6 /* LinkedList.swift */; };
 		0EC894E828223EDB0005A9B6 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC894DA28223E280005A9B6 /* Bank.swift */; };
@@ -47,7 +46,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0EC894D728223E280005A9B6 /* BankClerk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankClerk.swift; sourceTree = "<group>"; };
 		0EC894D828223E280005A9B6 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		0EC894DA28223E280005A9B6 /* Bank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
 		0EC894DB28223E280005A9B6 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
@@ -100,6 +98,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E8146F42827D9FC00FFAAE3 /* Bank */ = {
+			isa = PBXGroup;
+			children = (
+				0EC894DB28223E280005A9B6 /* Task.swift */,
+				0EC894DA28223E280005A9B6 /* Bank.swift */,
+				0EC894D828223E280005A9B6 /* Client.swift */,
+			);
+			path = Bank;
+			sourceTree = "<group>";
+		};
 		0EC894D528223E280005A9B6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,10 +120,8 @@
 		0EC894D628223E280005A9B6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0EC894D728223E280005A9B6 /* BankClerk.swift */,
-				0EC894D828223E280005A9B6 /* Client.swift */,
-				0EC894DA28223E280005A9B6 /* Bank.swift */,
-				0EC894DB28223E280005A9B6 /* Task.swift */,
+				0E8146F42827D9FC00FFAAE3 /* Bank */,
+				0EC894F3282322BD0005A9B6 /* StopWatch.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -171,7 +177,6 @@
 			children = (
 				C7694E3E259C3E9F0053667F /* BankViewController.swift */,
 				0EC894F0282243190005A9B6 /* BankView.swift */,
-				0EC894F3282322BD0005A9B6 /* StopWatch.swift */,
 			);
 			path = BankController;
 			sourceTree = "<group>";
@@ -388,7 +393,6 @@
 				864EE3A1282254F500573488 /* UIStackView+.swift in Sources */,
 				0EC894E628223EDB0005A9B6 /* Task.swift in Sources */,
 				0EC894F1282243190005A9B6 /* BankView.swift in Sources */,
-				0EC894E528223EDB0005A9B6 /* BankClerk.swift in Sources */,
 				0EC894EE28223EDB0005A9B6 /* String+.swift in Sources */,
 				0EC894E728223EDB0005A9B6 /* LinkedList.swift in Sources */,
 			);
