@@ -10,7 +10,7 @@
 [![SwiftLint](https://img.shields.io/badge/SwiftLint-green)]()
 
 # 학습한 키워드
-`concurrency programming` `GCD`
+`concurrency programming` `GCD` `Operation` `delegate pattern` `observer pattern`
 
 ## PR 바로가기
 [STEP 1 PR](https://github.com/yagom-academy/ios-bank-manager/pull/146)
